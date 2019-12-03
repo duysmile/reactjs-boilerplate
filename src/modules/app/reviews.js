@@ -1,14 +1,20 @@
 import api from 'utils/api';
+import {
+  APP_REVIEW_FETCHING_BY_STORE_ID,
+  APP_REVIEW_FETCHING_SUCCESS,
+  APP_REVIEW_CLEAR,
+  APP_REVIEW_FETCHING_ERROR,
+} from 'common/actionTypes';
 
 export default function reducer(state={}, action) {
   switch (action.type) {
-    case 'app.reviews.fetchingByPlayStoreId': 
+    case APP_REVIEW_FETCHING_BY_STORE_ID: 
       return {...state, fetchingByPlayStoreId: true};
 
-    case 'app.reviews.fetchSuccess':
+    case APP_REVIEW_FETCHING_SUCCESS:
       return {...state, fetchingByPlayStoreId: false, ...action.res};
 
-    case 'app.reviews.clear':
+    case APP_REVIEW_CLEAR:
       return {...state, fetchingByPlayStoreId: false, collection: []};
 
     default: 
@@ -19,14 +25,14 @@ export default function reducer(state={}, action) {
 // actions
 export function fetchByPlayStoreId(playStoreId) {
   return (dispatch) => {
-    dispatch({type: 'app.reviews.fetchingByPlayStoreId'});
+    dispatch({type: APP_REVIEW_FETCHING_BY_STORE_ID});
     api
       .get(`/apps/${playStoreId}/reviews`)
       .then(res => {
-        dispatch({type: 'app.reviews.fetchSuccess', res});
+        dispatch({type: APP_REVIEW_FETCHING_SUCCESS, res});
       })
       .catch(err => {
-        dispatch({type: 'app.reviews.fetchError', err});
+        dispatch({type: APP_REVIEW_FETCHING_ERROR, err});
       })
     ;
   };
@@ -34,6 +40,6 @@ export function fetchByPlayStoreId(playStoreId) {
 
 export function clear() {
   return {
-    type: 'app.reviews.clear'
+    type: APP_REVIEW_CLEAR
   };
 }

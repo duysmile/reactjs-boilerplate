@@ -1,15 +1,20 @@
 import api from 'utils/api';
-import {fetchByPlayStoreId as fetchReviewsByPlayStoreId} from 'modules/app/reviews';
+import {
+  APPS_FETCHING_BY_STORE_ID,
+  APP_FETCH_SUCCESS,
+  APP_FETCH_ERROR,
+} from 'common/actionTypes';
+import { fetchByPlayStoreId as fetchReviewsByPlayStoreId } from 'modules/app/reviews';
 
-export default function reducer(state={}, action) {
+export default function reducer(state = {}, action) {
   switch (action.type) {
-    case 'apps.fetchingByPlayStoreId': 
-      return {...state, fetchingByPlayStoreId: true};
+    case APPS_FETCHING_BY_STORE_ID:
+      return { ...state, fetchingByPlayStoreId: true };
 
-    case 'apps.fetchSuccess':
-      return {...state, fetchingByPlayStoreId: false, ...action.res};
+    case APP_FETCH_SUCCESS:
+      return { ...state, fetchingByPlayStoreId: false, ...action.res };
 
-    default: 
+    default:
       return state;
   }
 }
@@ -17,17 +22,17 @@ export default function reducer(state={}, action) {
 // actions
 export function fetchByPlayStoreId(playStoreId) {
   return (dispatch) => {
-    dispatch({type: 'apps.fetchingByPlayStoreId'});
+    dispatch({ type: APPS_FETCHING_BY_STORE_ID });
     api
       .get(`/apps/${playStoreId}`)
       .then(res => {
-        dispatch({type: 'apps.fetchSuccess', res});
+        dispatch({ type: APP_FETCH_SUCCESS, res });
         dispatch(fetchReviewsByPlayStoreId(playStoreId));
       })
       .catch(err => {
         console.log(err);
-        dispatch({type: 'apps.fetchError', err});
+        dispatch({ type: APP_FETCH_ERROR, err });
       })
-    ;
+      ;
   };
 }
