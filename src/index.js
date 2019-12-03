@@ -12,7 +12,7 @@ const MyApp = () => (
   <Provider store={store}>
     <App />
   </Provider>
-)
+);
 
 ReactDOM.render(<MyApp />, document.getElementById('root'));
 registerServiceWorker();
