@@ -2,29 +2,17 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import { Provider } from 'react-redux';
 
-import logger from 'redux-logger';
-import reduxThunk from 'redux-thunk';
+import 'index.css';
+import registerServiceWorker from 'utils/registerServiceWorker';
+import store from 'store';
 
-import {
-  createStore,
-  applyMiddleware,
-} from 'redux';
+import App from './routes';
 
-import App from './app/App';
-import rootReducer from './reducers';
-import * as serviceWorker from './serviceWorker';
-
-const middleware = applyMiddleware(reduxThunk, logger);
-const store = createStore(rootReducer, middleware);
-
-ReactDOM.render(
+const MyApp = () => (
   <Provider store={store}>
     <App />
-  </Provider>,
-  document.getElementById('root')
-);
+  </Provider>
+)
 
-// If you want your app to work offline and load faster, you can change
-// unregister() to register() below. Note this comes with some pitfalls.
-// Learn more about service workers: https://bit.ly/CRA-PWA
-serviceWorker.unregister();
+ReactDOM.render(<MyApp />, document.getElementById('root'));
+registerServiceWorker();
